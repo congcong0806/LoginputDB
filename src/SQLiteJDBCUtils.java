@@ -24,7 +24,7 @@ import java.util.Map;
 
 public class SQLiteJDBCUtils {
 
-	private String path = "/Users/cc/Documents/code/eclipse/SQLite/user.db";
+	private String path = "/Users/cc/Documents/code/GitHub/LoginputDB/user.db";
 
 	Connection c;
 	Statement stmt;
