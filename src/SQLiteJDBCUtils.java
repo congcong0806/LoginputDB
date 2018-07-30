@@ -24,20 +24,20 @@ import java.util.Map;
 
 public class SQLiteJDBCUtils {
 
-	private String path = "/Users/cc/Documents/code/GitHub/LoginputDB/user.db";
+	private static String path = "/Users/cc/Documents/code/GitHub/LoginputDB/user.db";
 
-	Connection c;
-	Statement stmt;
+	 static Connection c;
+	 static Statement stmt;
 
 	public static void main(String[] args) {
-		// new SQLiteJDBCUtils().count();
-		new SQLiteJDBCUtils().readTxt();
-		// new SQLiteJDBCUtils().insertTxt();
-		// new SQLiteJDBCUtils().deleteTxt();
-		//new SQLiteJDBCUtils().deleteStr();
+		//count();
+		readTxt();
+		//insertTxt();
+		//deleteTxt();
+		//deleteStr();
 	}
 
-	public void before() {
+	public static void before() {
 		try {
 			Class.forName("org.sqlite.JDBC");
 			c = DriverManager.getConnection("jdbc:sqlite:" + path);
@@ -48,7 +48,7 @@ public class SQLiteJDBCUtils {
 		}
 	}
 
-	public void after() {
+	public static void after() {
 		try {
 			stmt.close();
 			c.close();
@@ -60,7 +60,7 @@ public class SQLiteJDBCUtils {
 	/**
 	 * 读取txt 写入db
 	 */
-	public void count() {
+	public static void count() {
 		try {
 			if (stmt == null)
 				before();
@@ -81,15 +81,16 @@ public class SQLiteJDBCUtils {
 	/**
 	 * 读取txt 写入db
 	 */
-	public void readTxt() {
+	public static void readTxt() {
 		try {
 			if (stmt == null)
 				before();
 			String dir = "/Users/cc/Documents/搜狗词库to落格/"; // 绝对路径
 			// String fileArr []=
 			// {"搜狗词库_自然码.txt","通讯录_自然码.txt","日常用语大词库_自然码.txt","成语_自然码.txt"};
-			 String fileArr []= {"搜狗词库_自然码.txt","通讯录_自然码.txt"};
-			//String fileArr[] = { "通讯录_自然码.txt" };
+			// String fileArr []= {"搜狗词库_自然码.txt","通讯录_自然码.txt"};
+			 String fileArr[] = { "通讯录_自然码.txt" };
+			//String fileArr[] = { "最常用的10000个英文单词.txt" };
 			int index = 0;
 			for (String fileName : fileArr) {
 				if (fileName == null || fileName.isEmpty())
@@ -117,10 +118,10 @@ public class SQLiteJDBCUtils {
 					line = br.readLine(); // 一行数据
 					if (line != null) {
 						String arr[] = line.split("	");
-						if (datamap.get(arr[0]) == null) {
+						if (datamap.get(arr[0]) == null && arr[1] != null) {
 							buffer.setLength(0);
-							buffer.append("insert into 自然码 (Py,Word,Weight,New) values ('" + arr[1] + "','" + arr[0]
-									+ "',0,0);");
+							buffer.append("insert into 自然码 (Py,Word,Weight,New) values ('" + arr[1].toLowerCase()
+									+ "','" + arr[0] + "',0,0);");
 							stmt.executeUpdate(buffer.toString());
 							if (index % 10000 == 0) {
 								c.commit();
@@ -145,7 +146,7 @@ public class SQLiteJDBCUtils {
 	/**
 	 * 读取txt 删除db
 	 */
-	public void deleteTxt() {
+	public static void deleteTxt() {
 		try {
 			if (stmt == null)
 				before();
@@ -194,7 +195,7 @@ public class SQLiteJDBCUtils {
 	/**
 	 * 读取String 删除db
 	 */
-	public void deleteStr() {
+	public static void deleteStr() {
 		try {
 			if (stmt == null)
 				before();
@@ -235,7 +236,7 @@ public class SQLiteJDBCUtils {
 	/**
 	 * 写入txt
 	 */
-	public void insertTxt() {
+	public static void insertTxt() {
 		try {
 			if (stmt == null)
 				before();
